@@ -1,41 +1,19 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class FindElements {
+    std::bitset< (2<<20) > vv;
+    
+    void recover(TreeNode* n, int ii) {
+        if(!n) { return; }
+        
+        vv[ii] = true;
+        recover(n->left, ii*2+1);
+        recover(n->right, ii*2+2);
+    }
 public:
-    vector<int> v;
     FindElements(TreeNode* root) {
-        root->val = 0;
-        TreeNode* node = helper(root);
-        sort(v.begin(),v.end());
+        recover(root, 0);
     }
-    TreeNode* helper(TreeNode* root){
-        if(root->left){
-            root->left->val=2*root->val+1;
-            helper(root->left); 
-        }
-        if(root->right){
-            root->right->val=2*root->val+2;
-            helper(root->right);  
-        }
-        v.push_back(root->val);
-        return root;
-    }
+    
     bool find(int target) {
-        return binary_search(v.begin(),v.end(),target);
+        return vv[target] == true;
     }
 };
-
-/**
- * Your FindElements object will be instantiated and called as such:
- * FindElements* obj = new FindElements(root);
- * bool param_1 = obj->find(target);
- */
