@@ -1,24 +1,10 @@
 class Solution {
 public:
     int maximumScore(int a, int b, int c) {
-        priority_queue<int> pq;
-        pq.push(a);
-        pq.push(b);
-        pq.push(c);
-        int f=1;
-        int ans=0;
-        while(f)
-        {
-            int f=pq.top(); pq.pop();
-            int s=pq.top(); pq.pop();
-            if(f==0 || s==0)
-                break;
-            ans++;
-            f--; s--;
-            pq.push(f);
-            pq.push(s);
-        }
-        return ans;
-        
-    }
+    if (a < b)
+        return maximumScore(b, a, c);
+    if (b < c)
+        return maximumScore(a, c, b);
+    return b == 0 ? 0 : 1 + maximumScore(a - 1, b - 1, c); 
+}
 };
