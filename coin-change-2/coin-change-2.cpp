@@ -1,26 +1,20 @@
 class Solution {
 public:
-    
-    vector<vector<int>> memo;
-    
-    int change(int amount, vector<int>& coins){
-        memo.resize(amount+1,vector<int>(coins.size()+1,-1));
-        return rec(amount,coins,0);
+    vector<vector<int>> dp;
+    int change(int amount, vector<int>& coins) {
+        dp.resize(amount+1,vector<int>(coins.size()+1,-1));
+        return noOfCoins(amount,coins,0);
     }
     
-    int rec(int amount,vector<int>& coins,int start){
+    int noOfCoins(int amount, vector<int>& coins,int position){
+        if(position>=coins.size()) return 0;
+        if(amount==0 || amount<0) return amount==0?1:0;
         
-        if(amount<0) return 0;
-        if(amount==0) return 1;
-
-        if(memo[amount][start]!=-1) return memo[amount][start];
+        if(dp[amount][position]!=-1) return dp[amount][position];
         
-        for(int i =start;i<coins.size();i++){
-            return memo[amount][start] = rec(amount-coins[i],coins,start)+rec(amount,coins,start+1);
-        }
+        int includePosition = noOfCoins(amount-coins[position],coins,position);
+        int notIncludePosition = noOfCoins(amount,coins,position+1);
         
-        return memo[amount][start] = 0;
-        
+        return dp[amount][position] = includePosition+notIncludePosition;
     }
-    
 };
