@@ -13,14 +13,6 @@ public:
                 break;
             }
         }
-        // for(int i = 0;i<num.size();i++){
-        //     auto it = hash.find(target-num[i]);
-        //     if(it!=hash.end() && it->second!=i){
-        //         v.push_back(i);
-        //         v.push_back(it->second);
-        //         break;
-        //     }
-        // }
         return v;
     }
 };
