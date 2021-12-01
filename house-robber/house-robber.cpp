@@ -1,20 +1,19 @@
 class Solution {
-public:
+private:
     vector<int> dp;
+public:
+    
     int rob(vector<int>& nums) {
         dp.resize(nums.size(),-1);
-        return robSim(0,nums);
+        return max(robHelper(nums,0),robHelper(nums,1));
     }
     
-    int robSim(int index, vector<int>& nums){
-        if(index>nums.size()-1){
-            return 0;
-        }
-        if(dp[index]!=-1){
-            return dp[index];
-        }
-        int stealPreHouse = nums[index]+robSim(index+2,nums);
-        int stealPostHouse=robSim(index+1,nums);
-        return dp[index] = max(stealPreHouse,stealPostHouse);
+    int robHelper(vector<int>& nums, int start){
+        if(start>nums.size()-1) return 0;
+        if(dp[start]!=-1) return dp[start];
+        int maxMoney = 0;
+        int robAtGapOne = robHelper(nums,start+2);
+        int robAtGapTwo = robHelper(nums,start+3);
+        return dp[start] = nums[start] + max(robAtGapOne,robAtGapTwo);
     }
 };
