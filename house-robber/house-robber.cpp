@@ -1,19 +1,20 @@
 class Solution {
-private:
-    vector<int> dp;
 public:
-    
-    int rob(vector<int>& nums) {
-        dp.resize(nums.size(),-1);
-        return max(robHelper(nums,0),robHelper(nums,1));
-    }
-    
-    int robHelper(vector<int>& nums, int start){
-        if(start>nums.size()-1) return 0;
-        if(dp[start]!=-1) return dp[start];
-        int maxMoney = 0;
-        int robAtGapOne = robHelper(nums,start+2);
-        int robAtGapTwo = robHelper(nums,start+3);
-        return dp[start] = nums[start] + max(robAtGapOne,robAtGapTwo);
-    }
+	int rob(vector<int>& nums) {
+        int n = nums.size();
+        if(n==1) return nums[0];
+		vector<int> dp(n);
+        dp[0]=nums[0];
+        dp[1]=max(nums[0],nums[1]);
+        for(int i = 2;i<n;i++){
+            dp[i] = max(nums[i]+dp[i-2],dp[i-1]);
+        }
+        return max(dp[n-1],dp[n-2]);
+	}
 };
+static int x = []() {
+	std::ios::sync_with_stdio(false);
+	std::cin.tie(nullptr);
+	cout.tie(NULL);
+	return 0;
+}();
