@@ -1,37 +1,28 @@
 class Solution {
 public:
-    vector<vector<int>> memo;
     int minCostII(vector<vector<int>>& costs) {
-        int n = costs.size(),m=costs[0].size();
-        memo.resize(n+1,vector<int>(m+1,-1));
-        return dp(0,0,costs);
-    }
-    int dp(int index,int prevColorIdx,vector<vector<int>>& costs){
-        if(index==costs.size()) return 0;
-        if(memo[index][prevColorIdx]!=-1) return memo[index][prevColorIdx];
-        int minPrice = INT_MAX;
-        for(int i = 0;i<costs[0].size();i++){
-            if(i==prevColorIdx-1) continue;
-            minPrice = min(minPrice,costs[index][i]+dp(index+1,i+1,costs));
+        int n = costs.size();
+        int m = costs[0].size();
+        vector<vector<int>> memo(n+1,vector<int>(m,-1));
+        for(int i = 0;i<m;i++){
+            memo[0][i]=costs[0][i];
         }
-        return memo[index][prevColorIdx] = minPrice;
+        for(int i = 1;i<n;i++){
+            int minPrice = INT_MAX;
+            for(int j = 0;j<m;j++){
+                int cost = INT_MAX;
+                for(int k = 0;k<m;k++){
+                    if(k==j) continue;
+                    cost = min(cost,costs[i][j]+memo[i-1][k]);
+                }
+                memo[i][j]=cost;
+            }
+        }
+        // return min({memo[n-1][0],memo[n-1][1],memo[n-1][2]});
+        int ans = INT_MAX;
+        for(int i = 0;i<m;i++){
+            ans=min(ans,memo[n-1][i]);
+        }
+        return ans;
     }
 };
-// class Solution {
-// public:
-//     int memo[101][4];
-//     int minCost(vector<vector<int>>& costs) {
-//         memset(memo,-1,sizeof(memo));
-//         return dp(0,0,costs);
-//     }
-//     int dp(int index,int prevColorIdx,vector<vector<int>>& costs){
-//         if(index==costs.size()) return 0;
-//         if(memo[index][prevColorIdx]!=-1) return memo[index][prevColorIdx];
-//         int minPrice = INT_MAX;
-//         for(int i = 0;i<costs[0].size();i++){
-//             if(i==prevColorIdx-1) continue;
-//             minPrice = min(minPrice,costs[index][i]+dp(index+1,i+1,costs));
-//         }
-//         return memo[index][prevColorIdx] = minPrice;
-//     }
-// };
