@@ -1,5 +1,5 @@
 class Solution {
-    int dp[201][201];
+    int dp[200][200];
 public:
     int longestIncreasingPath(vector<vector<int>>& matrix) {
         int rows = matrix.size(); //m->acc to ques
