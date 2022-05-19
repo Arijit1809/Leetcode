@@ -1,44 +1,20 @@
 class Solution {
-    int dp[200][200];
 public:
-    int longestIncreasingPath(vector<vector<int>>& matrix) {
-        int rows = matrix.size(); //m->acc to ques
-        int columns = matrix[0].size(); //n->acc to ques
-        memset(dp,-1,sizeof(dp));
-        int ans = 0;
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < columns; j++){
-                ans=max(rec(i,j,matrix),ans);
-            }
-        }
-        return ans;
-    }
-    
-    int rec(int rowNum, int colNum,vector<vector<int>> &matrix){
-        int u=0,l=0,d=0,r=0;
-        int rows = matrix.size(); //m->acc to ques
-        int columns = matrix[0].size(); //n->acc to ques
-        
-        if(dp[rowNum][colNum]!=-1) return dp[rowNum][colNum];
-        
-        int currElem = matrix[rowNum][colNum];
-        //for the case of going up
-        if(rowNum!=0 && matrix[rowNum-1][colNum]>currElem){
-            u = rec(rowNum-1,colNum,matrix);
-        }
-        //down
-        if(rowNum!=rows-1 && matrix[rowNum+1][colNum]>currElem){
-            d = rec(rowNum+1,colNum,matrix);
-        }
-        //left
-        if(colNum!=0 && matrix[rowNum][colNum-1]>currElem){
-            l = rec(rowNum,colNum-1,matrix);
-        }
-        //right
-        if(colNum!=columns-1 && matrix[rowNum][colNum+1]>currElem){
-            r = rec(rowNum,colNum+1,matrix);
-        }
-        
-        return dp[rowNum][colNum] = 1 + max({u,l,d,r});
-    }
+    int dp[200][200]{}; // constraints are small enough that we can just set them to MAX
+int maxPath, n, m;
+int longestIncreasingPath(vector<vector<int>>& matrix) {
+	maxPath = 0, n = size(matrix), m = size(matrix[0]);
+	for(int i = 0; i < n; i++)
+		for(int j = 0; j < m; j++)
+			maxPath = max(maxPath, solve(matrix, i, j, -1));            
+	return maxPath;
+}
+int solve(vector<vector<int>>& mat, int i, int j, int prev){
+	if(i < 0 || j < 0 || i >= n || j >= m || mat[i][j] <= prev) return 0;
+	if(dp[i][j]) return dp[i][j];
+	return dp[i][j] = 1 + max({ solve(mat, i + 1, j, mat[i][j]),
+							    solve(mat, i - 1, j, mat[i][j]),
+							    solve(mat, i, j + 1, mat[i][j]),
+							    solve(mat, i, j - 1, mat[i][j]) });       
+}
 };
