@@ -17,7 +17,8 @@ public:
         if(dp[i][j]!=-1) return dp[i][j];
         bool isP = true;
         while(i<j){
-            if(s[i]!=s[j]){
+            if(s[i]==s[j] && dp[i][j]!=-1) return dp[i][j];
+            else if(s[i]!=s[j]){
                 isP = false;
                 break;
             }
