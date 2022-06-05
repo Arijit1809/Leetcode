@@ -8,7 +8,6 @@ public:
         for(int i = 0; i< colors;i++){
             dp[0][i] = 0;
         }
-            
         for(int j=1;j<=houses;j++){
             for(int i = 0;i<colors;i++){
                 int minCost = INT_MAX;
