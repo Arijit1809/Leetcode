@@ -22,7 +22,7 @@ public:
             if(i == color){
                 continue;
             }
-            minCost = min(minCost, costs[index][i] + rec2(costs,index-1,i)); //i color was used to paint this house
+            minCost = min(minCost, costs[index][i] + rec2(costs,index-1,i));
         }
         return dp[index+1][color] = minCost;
     }
