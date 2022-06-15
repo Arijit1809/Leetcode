@@ -25,24 +25,16 @@ class UnionFind {
 class Solution {
 public:
     bool canSwap(string s1, string s2){
-        char a, b;
         int notSame = 0;
         bool flag = false;
         for(int i = 0; i < s1.length(); i++){
             if(s1[i]!=s2[i]){
                 notSame++;
-                if(notSame==1){
-                    a = s1[i];
-                    b = s2[i];
-                }else if(notSame==2){
-                    if(s1[i]==b && s2[i]==a) flag = true;
-                }else {
-                    return false;
-                }
+                if(notSame>2) return false;
             }
         }
-        if(notSame<2) flag = true;
-        return flag;
+        // if(notSame<2) flag = true;
+        return true;
     }
     int numSimilarGroups(vector<string>& strs) {
         int n = strs.size();
