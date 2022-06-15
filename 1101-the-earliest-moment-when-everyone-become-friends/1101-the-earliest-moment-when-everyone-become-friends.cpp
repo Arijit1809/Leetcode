@@ -32,9 +32,8 @@ public:
         int s = n;
         for(int i = 0; i < logs.size(); i++){
             int node1 = logs[i][1], node2 = logs[i][2];
-            if(ds.connected(node1,node2)){ //already in the same friends group, connected indirectly
-                // if(minTime==0) minTime = logs[i][0];
-            }else{
+            if(!ds.connected(node1,node2)){
+            
                 ds.unionSet(node1,node2);
                 n--;
                 minTime = logs[i][0];
