@@ -15,11 +15,7 @@ public:
             node->val = (node->val+1)%10;
             return hasCarry;
         }
-        int valueOfThisNode = node->val;
-        int isCarryOver = carryOver(node->next);
-        if(isCarryOver==1){
-            node->val+=1;
-        }
+        node->val+=carryOver(node->next);
         int hasCarry = node->val/10;
         node->val = node->val%10;
         return hasCarry;
