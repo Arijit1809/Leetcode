@@ -1,23 +1,26 @@
 class Solution {
 public:
     ListNode* plusOne(ListNode* head) {
-        int hasCarry = carryOver(head);
-        if(hasCarry){
-            ListNode* newHead = new ListNode(1,head);
-            return newHead;
-        }else{
-            return head;
+        // sentinel head
+        ListNode* sentinel = new ListNode(0);
+        sentinel->next = head;
+        ListNode* notNine = sentinel;
+
+        // find the rightmost not-nine digit
+        while (head != nullptr) {
+            if (head->val != 9) notNine = head;
+            head = head->next;
         }
-    }
-    int carryOver(ListNode* node){
-        if(node->next==NULL){
-            int hasCarry = (node->val+1)/10;
-            node->val = (node->val+1)%10;
-            return hasCarry;
+        // increase this rightmost not-nine digit by 1
+        notNine->val++;
+        notNine = notNine->next;
+        // set all the following nines to zeros
+        while (notNine != nullptr) {
+            notNine->val = 0;
+            notNine = notNine->next;
         }
-        node->val+=carryOver(node->next);
-        int hasCarry = node->val/10;
-        node->val = node->val%10;
-        return hasCarry;
+
+        delete notNine;
+        return sentinel->val != 0 ? sentinel : sentinel->next;
     }
 };
