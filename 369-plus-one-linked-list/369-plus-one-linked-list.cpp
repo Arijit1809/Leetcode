@@ -13,8 +13,7 @@ public:
     ListNode* plusOne(ListNode* head) {
         int hasCarry = carryOver(head);
         if(hasCarry){
-            ListNode* newHead = new ListNode(1,NULL);
-            newHead->next = head;
+            ListNode* newHead = new ListNode(1,head);
             return newHead;
         }else{
             return head;
