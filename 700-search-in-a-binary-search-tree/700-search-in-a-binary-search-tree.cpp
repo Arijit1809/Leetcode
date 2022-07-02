@@ -16,14 +16,9 @@ public:
             return NULL;
         if(root->val==val)
             return root;
-        TreeNode* l = searchBST(root->left,val);
-        TreeNode* r = searchBST(root->right,val);
-        
-        if(l)
-            return l;
-        if(r)
-            return r;
-        
-        return NULL;
+        else if(root->val>val)
+            return searchBST(root->left,val);
+        else
+            return searchBST(root->right,val);
     }
 };
