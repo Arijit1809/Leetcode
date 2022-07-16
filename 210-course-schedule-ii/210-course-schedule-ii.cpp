@@ -1,54 +1,65 @@
-class Solution {
+class Graph { 
+private: 
+    int nodes;
+    vector<vector<int>> adjList;
+    vector<int> indegree;
+    vector<int> toposort;
 public:
-    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<int> result(numCourses);
-        if (numCourses == 0) {
-            return result;
+    Graph(int numOfNodes, vector<vector<int>> &edges){
+        nodes = numOfNodes;
+        adjList.resize(numOfNodes);
+        indegree.resize(numOfNodes,0);
+        for(vector<int> edge:edges){
+            int edgeFrom = edge[1];
+            int edgeTo = edge[0];
+            adjList[edgeFrom].push_back(edgeTo);
+            indegree[edgeTo]+=1;
         }
-
-        if (prerequisites.empty()) {
-            for (int i = 0; i < numCourses; i++) {
-                result[i] = i;
-            }
-            return result;
-        }
-
-        vector<int> indegree(numCourses);
-        queue<int> zeroDegree;
-        for (vector<int>& pre : prerequisites) {
-            indegree[pre[0]]++;
-        }
-        for (int i = 0; i < indegree.size(); i++) {
-            if (indegree[i] == 0) {
-                zeroDegree.push(i);
+    }
+    
+    bool topoSort(){
+        vector<int> indegreeOfNodes = indegree;
+        queue<int> indegreeQueue;
+        for(int node = 0; node < nodes; node++){
+            if(indegreeOfNodes[node]==0){
+                indegreeQueue.push(node);
             }
         }
-        if (zeroDegree.empty()) {
-            return vector<int>();
-        }
-
-        int index = 0;
-        while (!zeroDegree.empty()) {
-            int course = zeroDegree.front();
-            zeroDegree.pop();
-            result[index] = course;
-            index++;
-            for (vector<int>& pre : prerequisites) {
-                if (pre[1] == course) {
-                    indegree[pre[0]]--;
-                    if (indegree[pre[0]] == 0) {
-                        zeroDegree.push(pre[0]);
-                    }
+        if(indegreeQueue.empty()) return false;
+        while(!indegreeQueue.empty()){
+            int currNode = indegreeQueue.front();
+            indegreeQueue.pop();
+            toposort.push_back(currNode);
+            for(int adjNode : adjList[currNode]){
+                indegreeOfNodes[adjNode]-=1;
+                if(indegreeOfNodes[adjNode]==0){
+                    indegreeQueue.push(adjNode);
                 }
             }
         }
-
-        for (int in : indegree) {
-            if (in != 0) {
-                return vector<int>();
+        bool isCyclic = false;
+        for(int nodeIndegree : indegreeOfNodes){
+            if(nodeIndegree!=0){
+                isCyclic = true;
             }
         }
+        return !isCyclic;
+    }
+    
+    vector<int> getTopoSort(){
+        return toposort;
+    }
+};
 
-        return result;
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        Graph courses(numCourses, prerequisites);
+        bool canFindOrder = courses.topoSort();
+        if(canFindOrder){
+            return courses.getTopoSort();
+        }else{
+            return {};
+        }
     }
 };
