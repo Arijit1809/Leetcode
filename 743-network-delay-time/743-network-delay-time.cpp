@@ -5,8 +5,8 @@ public:
     vector<vector<pair<int, int>>> adj = vector<vector<pair<int, int>>> (101);
     
     void dijkstra(vector<int>& signalReceivedAt, int source, int n) {
-        priority_queue<pair<int, int>, vector<pair<int, int>>, 
-        greater<pair<int, int>>> pq;
+
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int,int>>> pq;
         pq.push({0, source});
         
         // Time for starting node is 0
@@ -17,9 +17,9 @@ public:
             int currNode = pq.top().second; 
             pq.pop();
             
-            if (currNodeTime > signalReceivedAt[currNode]) {
-                continue;
-            }
+//             if (currNodeTime > signalReceivedAt[currNode]) {
+//                 continue;
+//             }
             
             // Broadcast the signal to adjacent nodes
             for (pair<int, int> edge : adj[currNode]) {
