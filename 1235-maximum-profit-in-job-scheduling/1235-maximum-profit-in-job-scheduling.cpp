@@ -21,13 +21,26 @@ public:
         for(int i = 0; i<startTime.size();i++){
             jobs.push_back({startTime[i], endTime[i], profit[i]});
         }
-        vector<int> dp(profit.size(), -1);
+        
+        vector<int> dp(profit.size() + 1, -1);
+        
         sort(jobs.begin(), jobs.end());
+        
+        int n = profit.size();
+        
+        dp[n] = 0;
         
         for(int i = 0; i < profit.size() ; i++){
             startTime[i] = jobs[i][0];
         }
         
-        return findMaxProfit(jobs, startTime, profit.size(), 0, dp);
+        for(int position = n-1; position >= 0; position--){
+            int nextIndex = lower_bound(startTime.begin(), startTime.end(), jobs[position][1]) - startTime.begin();
+            int maxProfit = max(dp[position+1], jobs[position][2] + dp[nextIndex]);
+        
+            dp[position] = maxProfit;
+        }
+        
+        return dp[0];
     }
 };
