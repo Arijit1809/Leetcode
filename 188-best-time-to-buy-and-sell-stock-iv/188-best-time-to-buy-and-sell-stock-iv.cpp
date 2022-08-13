@@ -3,7 +3,6 @@ public:
     int maxProfit(int k, vector<int>& prices) {
         int trans = k;
         int len = prices.size();
-        if(len == 1) return 0;
         vector<vector<vector<int>>> dp(len+1, vector<vector<int>>(2, vector<int>(trans+1, 0)));
         for(int i = len-1; i>=0; i--){
             for(int j = 0; j <= 1; j++){
