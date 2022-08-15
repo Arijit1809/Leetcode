@@ -16,7 +16,6 @@ public:
             return head;
         }
         
-        
         while(temp->next!=NULL)
         {
             prev=prev->next;
